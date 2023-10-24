@@ -1,0 +1,35 @@
+
+//this is a function that needs to render a html page (here we can create .tmpl page)
+func Home(w http.ResponseWriter, r *http.Request) {
+	
+    //we will pass the response writer and the name to template file to be rendered
+    renderTemplate(w, "home.page.tmpl")
+}
+
+
+
+func renderTemplate(w http.ResponseWriter, tmpl string) {
+
+    //we will use built in template.ParseFiles function to parse the template
+	parsedTemplate, _ := template.ParseFiles("./templates/" + tmpl)
+
+    //we will execute the parsed template using the Execute built in method
+	err := parsedTemplate.Execute(w, nil)
+
+    //if there is any error we will recored it here
+	if err != nil {
+		fmt.Println("Error parsing template", err)
+		return
+	}
+}
+
+
+func main() {
+
+    //this is a handler function, it takes a path and a function with resonse and request parameters 
+	http.HandleFunc("/", Home)
+	
+    //these 2 lines can create and start a production level server on the specified portNumber
+	fmt.Printf(fmt.Sprintf("Server listening on port %s", portNumber))
+	http.ListenAndServe(portNumber, nil)
+}
