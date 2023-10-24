@@ -1,0 +1,47 @@
+In layout we can define the structure that we want to keep same across all the web pages and let's call this file as 
+    base.layout.tmpl
+
+we use {{define "base"}} at the start and {{end}} at the end. To add content to this base layout we define blocks like 
+{{block "content" .}} and {{end}}
+
+On the webpages at the start define {{template "base"}} and put the content within {{define "content"}} and {{end}}
+
+Make changes to your renger.go file and add this base.layout.tmpl to your ParseFiles function.
+
+
+
+Example:
+{{define "base"}}
+    <!DOCTYPE html>
+    <html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+        <title>Document</title>
+
+        {{block "css" .}}
+
+        {{end}}
+    </head>
+
+    <body>
+
+        {{block "content" .}}
+
+        {{end}}
+
+
+
+        {{block "js" .}}
+
+        {{end}}
+    </body>
+
+    </html>
+{{end}}
