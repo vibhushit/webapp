@@ -6,27 +6,38 @@ import (
 	"net/http"
 	"path/filepath"
 	"text/template"
+
+	"github.com/vibhushit/webapp/pkg/config"
 )
+
+var app *config.AppConfig
+
+// NewTemplates sets the config for the template package
+func NewTemplates(a *config.AppConfig) {
+	app = a
+}
 
 // method a bit complex but magical
 func RenderTemplate(w http.ResponseWriter, tmpl string) {
 
-	//create a template cache
-	tc, err := CreateTemplateCache()
+	//if i am in development environment I dont want to use cache and build template every time
+	var tc map[string]*template.Template
 
-	if err != nil {
-		log.Fatal(err)
+	if app.UseCache {
+		tc = app.TemplateCache
+	} else {
+		tc, _ = CreateTemplateCache()
 	}
 
 	//get requested template from cache
 	t, ok := tc[tmpl]
 	if !ok {
-		log.Fatal(err)
+		log.Fatal("could not get template from template cache")
 	}
 
 	buf := new(bytes.Buffer)
 
-	err = t.Execute(buf, nil)
+	err := t.Execute(buf, nil)
 
 	if err != nil {
 		log.Println(err)

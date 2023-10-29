@@ -1,12 +1,3 @@
-package handlers
-
-import (
-	"net/http"
-
-	"github.com/vibhushit/webapp/pkg/config"
-	"github.com/vibhushit/webapp/pkg/render"
-)
-
 //repository pattern
 
 // Repo is the repository used by the handlers
@@ -27,12 +18,4 @@ func NewRepo(a *config.AppConfig) *Repository {
 // NewHandlers sets the repository for the handlers
 func NewHandlers(r *Repository) {
 	Repo = r
-}
-
-func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
-	render.RenderTemplate(w, "home.page.tmpl")
-}
-
-func (m *Repository) About(w http.ResponseWriter, r *http.Request) {
-	render.RenderTemplate(w, "about.page.tmpl")
 }
