@@ -8,6 +8,7 @@ import (
 	"text/template"
 
 	"github.com/vibhushit/webapp/pkg/config"
+	"github.com/vibhushit/webapp/pkg/models"
 )
 
 var app *config.AppConfig
@@ -18,7 +19,7 @@ func NewTemplates(a *config.AppConfig) {
 }
 
 // method a bit complex but magical
-func RenderTemplate(w http.ResponseWriter, tmpl string) {
+func RenderTemplate(w http.ResponseWriter, tmpl string, td *models.TemplateData) {
 
 	//if i am in development environment I dont want to use cache and build template every time
 	var tc map[string]*template.Template
@@ -37,7 +38,7 @@ func RenderTemplate(w http.ResponseWriter, tmpl string) {
 
 	buf := new(bytes.Buffer)
 
-	err := t.Execute(buf, nil)
+	err := t.Execute(buf, td)
 
 	if err != nil {
 		log.Println(err)
